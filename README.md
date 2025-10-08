@@ -1,6 +1,6 @@
 # Real-Time Chat Application — Project Plan & Requirements
 
-**Authors:** [Your Name] & [Friend's Name]
+**Authors:** Ilyass Bel-Mehdi & Ghita Alaoui
 
 **Date:** October 4, 2025
 
