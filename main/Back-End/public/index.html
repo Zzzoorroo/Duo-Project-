@@ -7,18 +7,18 @@
 
 <body>
     <h1>Socket.IO Test</h1>
+    <h2 id="status">Connecting...</h2>
     <input id="messageInput" placeholder="Type a message..." />
     <button id="sendBtn">Send</button>
 
     <ul id="messages"></ul>
 
-    <!-- Import the Socket.IO client library -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <script>
-        // 1. Connect to the Socket.IO server
         const socket = io('http://localhost:3000');
-
+        let username;
+        let email;
         socket.on("connect", () => {
             document.getElementById("status").innerText = "Connected!";
             const username = prompt("Enter your username:");
@@ -27,18 +27,25 @@
             socket.emit("registerUser", { username, email });
         });
 
-        // 2. When user clicks send
+        socket.on("userJoined", (data) => {
+            alert(`${data.username} joined the chat!`);
+        });
+
+        socket.on("userLeft", (data) => {
+            alert(`${data.username} left the chat.`)
+        });
+
         const sendBtn = document.getElementById('sendBtn');
         const input = document.getElementById('messageInput');
         const messages = document.getElementById('messages');
 
         sendBtn.onclick = () => {
             const msg = input.value;
-            socket.emit('message', msg); // send message to server
+            socket.emit('message', msg);
             input.value = '';
         };
 
-        // 3. Listen for messages from the server
+
         socket.on('message', (data) => {
             const li = document.createElement('li');
             li.textContent = data;

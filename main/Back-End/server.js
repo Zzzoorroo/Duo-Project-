@@ -1,4 +1,4 @@
-const { Socket } = require("dgram");
+
 const express = require("express");
 const http = require("http");
 const { Server } = require('socket.io');
@@ -22,10 +22,20 @@ app.get('/', (req, res) => {
 io.on(`connection`, (socket) => {
     console.log('A user is conected', socket.id);
 
-    socket.on(`message`, (data) => {
-        console.log(`Received message:`, data);
+    socket.on("registerUser", ({ username, email }) => {
+        socket.data.username = username;
+        socket.data.email = email;
+        console.log(`${username} by the email  (${email}) connected`);
+        socket.broadcast.emit("userJoined", { username });
+    });
 
-        io.emit('message', `${socket.id.substr(0, 2)} said ${data}`);
+    socket.on(`message`, (data) => {
+        const username = socket.data.username || "Anonymous";
+        const message = `${username}: ${data}`;
+
+        console.log(`Received message:`, `${data} sent by ${username}`);
+
+        io.emit('message', `${username} said ${data}`);
     });
 
     socket.on('disconnect', () => {
