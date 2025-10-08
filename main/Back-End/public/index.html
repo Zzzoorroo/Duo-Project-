@@ -19,6 +19,14 @@
         // 1. Connect to the Socket.IO server
         const socket = io('http://localhost:3000');
 
+        socket.on("connect", () => {
+            document.getElementById("status").innerText = "Connected!";
+            const username = prompt("Enter your username:");
+            const email = prompt("Enter your email: ");
+
+            socket.emit("registerUser", { username, email });
+        });
+
         // 2. When user clicks send
         const sendBtn = document.getElementById('sendBtn');
         const input = document.getElementById('messageInput');
