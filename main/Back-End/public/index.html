@@ -51,6 +51,23 @@
             li.textContent = data;
             messages.appendChild(li);
         });
+
+        const Message = require("../message.js");
+
+        io.on("connection", async (socket) => {
+            console.log("A user connected", socket.id);
+
+            const lastMessage = await Message.find().sort({ timestamp: -1 }).limit(10);
+            socket.emit("chatHistory", lastMessage.reverse());
+
+            socket.om("message", async (data) => {
+                const username = socket.data.username || "Anonymous";
+                const msg = new Message({ username, text: data })
+                await msg.save();
+
+                io.emit("message", { username, text: data });
+            });
+        });
     </script>
 </body>
 
