@@ -2,72 +2,76 @@
 <html>
 
 <head>
-    <title>Socket.IO Test</title>
+    <title>Socket.IO Chat</title>
 </head>
 
 <body>
     <h1>Socket.IO Test</h1>
     <h2 id="status">Connecting...</h2>
-    <input id="messageInput" placeholder="Type a message..." />
-    <button id="sendBtn">Send</button>
 
     <ul id="messages"></ul>
+    <input id="messageInput" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <script>
         const socket = io('http://localhost:3000');
-        let username;
-        let email;
-        socket.on("connect", () => {
-            document.getElementById("status").innerText = "Connected!";
-            const username = prompt("Enter your username:");
-            const email = prompt("Enter your email: ");
 
+        const messagesList = document.getElementById("messages");
+        const status = document.getElementById("status");
+        const input = document.getElementById("messageInput");
+        const sendBtn = document.getElementById("sendBtn");
+
+        let username = "";
+        let email = "";
+
+        socket.on("connect", () => {
+            status.innerText = "Connected!";
+            username = prompt("Enter your username:") || "Anonymous";
+            email = prompt("Enter your email:") || "No email";
             socket.emit("registerUser", { username, email });
         });
 
+        // when user joins
         socket.on("userJoined", (data) => {
-            alert(`${data.username} joined the chat!`);
+            const li = document.createElement("li");
+            li.style.color = "green";
+            li.textContent = `${data.username} joined the chat!`;
+            messagesList.appendChild(li);
         });
 
+        // when user leaves (optional)
         socket.on("userLeft", (data) => {
-            alert(`${data.username} left the chat.`)
+            const li = document.createElement("li");
+            li.style.color = "red";
+            li.textContent = `${data.username} left the chat.`;
+            messagesList.appendChild(li);
         });
 
-        const sendBtn = document.getElementById('sendBtn');
-        const input = document.getElementById('messageInput');
-        const messages = document.getElementById('messages');
-
-        sendBtn.onclick = () => {
-            const msg = input.value;
-            socket.emit('message', msg);
-            input.value = '';
-        };
-
-
-        socket.on('message', (data) => {
-            const li = document.createElement('li');
-            li.textContent = data;
-            messages.appendChild(li);
-        });
-
-        const Message = require("../message.js");
-
-        io.on("connection", async (socket) => {
-            console.log("A user connected", socket.id);
-
-            const lastMessage = await Message.find().sort({ timestamp: -1 }).limit(10);
-            socket.emit("chatHistory", lastMessage.reverse());
-
-            socket.om("message", async (data) => {
-                const username = socket.data.username || "Anonymous";
-                const msg = new Message({ username, text: data })
-                await msg.save();
-
-                io.emit("message", { username, text: data });
+        // load chat history
+        socket.on("chatHistory", (msgs) => {
+            msgs.forEach((msg) => {
+                const li = document.createElement("li");
+                li.textContent = `${msg.username}: ${msg.text}`;
+                messagesList.appendChild(li);
             });
         });
+
+        // listen for messages
+        socket.on("message", (data) => {
+            const li = document.createElement("li");
+            li.textContent = data;
+            messagesList.appendChild(li);
+        });
+
+        // send message
+        sendBtn.onclick = () => {
+            const text = input.value.trim();
+            if (!text) return;
+            socket.emit("message", text);
+            input.value = "";
+        };
     </script>
 </body>
 
