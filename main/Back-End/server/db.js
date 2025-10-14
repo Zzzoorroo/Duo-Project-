@@ -1,6 +1,6 @@
 const Database = require("better-sqlite3");
 
-const db = new Database('duoproject.db')
+const db = new Database('./main/Back-End/data/duoproject.db')
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS messages (

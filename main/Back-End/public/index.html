@@ -41,7 +41,7 @@
             messagesList.appendChild(li);
         });
 
-        // when user leaves (optional)
+        
         socket.on("userLeft", (data) => {
             const li = document.createElement("li");
             li.style.color = "red";
