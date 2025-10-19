@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 # Ignorer les dépendances Node.js
 node_modules/
 main/Back-End/node_modules/
@@ -10,3 +10,4 @@ Thumbs.db
 
 # Logs
 *.log
+
