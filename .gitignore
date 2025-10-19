@@ -1,0 +1,12 @@
+#!bin/bash
+# Ignorer les dépendances Node.js
+node_modules/
+main/Back-End/node_modules/
+main/Front-End/node_modules/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
