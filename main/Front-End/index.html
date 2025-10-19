@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat App</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<h1>Real Time Chat Application</h1>
-<script src="script.js"></script>
-</body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Real Time Chat Application</h1>
+    <!--join sreen-->
+    <div id="join" class="screen active">
+      <h2>Join The Chat</h2>
+      <input type="text" id="username" placeholder="enter your name" />
+      <button id="joinBtn">Join</button>
+    </div>
+
+    <div id="chat" class="screen">
+      <header>
+        <h3>Global Room</h3>
+        <p id="users">Users online:</p>
+      </header>
+      <div id="messages" class="messages"></div>
+      <div class="chatInput">
+        <input type="text" id="msgInput" placeholder="Type a message..." />
+        <button id="emojiBtn">😊</button>
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
