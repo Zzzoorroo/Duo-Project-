@@ -3,30 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat App</title>
+    <title>Real-Time Chat App</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <h1>Real Time Chat Application</h1>
-    <!--join sreen-->
+    <h1>Live Chat !</h1>
     <div id="join" class="screen active">
-      <h2>Join The Chat</h2>
-      <input type="text" id="username" placeholder="enter your name" />
+      <h2>Login or Register</h2>
+      <input type="text" id="username" placeholder="Enter your username" />
+      <input type="password" id="password" placeholder="Enter your password" />
       <button id="joinBtn">Join</button>
+      <p class="register-link">
+        Don't have an account? <a href="#">Register here</a>
+      </p>
     </div>
 
     <div id="chat" class="screen">
       <header>
         <h3>Global Room</h3>
-        <p id="users">Users online:</p>
+        <button id="themeToggle" title="Toggle Light/Dark Theme">💡</button>
+        <p id="users">Users online: 1</p>
       </header>
       <div id="messages" class="messages"></div>
+      <div id="typingIndicator"></div>
       <div class="chatInput">
         <input type="text" id="msgInput" placeholder="Type a message..." />
-        <button id="emojiBtn">😊</button>
+        <button id="emojiBtn" title="Emoji Picker">😊</button>
         <button id="sendBtn">Send</button>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
